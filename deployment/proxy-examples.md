@@ -27,6 +27,7 @@
 * [Traefik v2](proxy-examples.md#traefik-v-2-docker-compose-example-by-hwwilliams) \(docker-compose 示例 by hwwilliams\)
 * [HAproxy](proxy-examples.md#haproxy-by-blackdex) \(by BlackDex\)
 * [HAproxy](proxy-examples.md#haproxy-by-williamdes) \(by [@williamdes](https://github.com/williamdes)\)
+* [HAproxy inside PfSense](proxy-examples.md#haproxy-inside-pfsense-by-richardmawdsley) \(by [@RichardMawdsley](https://github.com/RichardMawdsley)\)
 
 ## Caddy 2.x
 
@@ -510,4 +511,105 @@ backend vaultwarden_ws
     # 如果您在 docker-compose 中使用 haproxy，则可以使用容器主机名
     server vw_ws 0.0.0.0:3012
 ```
+
+## HAproxy inside PfSense \(by [@RichardMawdsley](https://github.com/RichardMawdsley)\)
+
+作为 GUI 设置，下面的详细信息\说明供您在需要的地方添加。
+
+* 假设您已经设置好了基本的 HTTP &gt; HTTPS 重定向设置。[基本设置](https://blog.devita.co/pfsense-to-proxy-traffic-for-websites-using-pfsense/)
+
+### 后端创建
+
+后端 1：
+
+```text
+Mode	  Name	                     Forwardto	    Address	      Port	 Encrypt(SSL)	 SSL checks	  Weight	 Actions
+active 	Vaultwarden                Address+Port:  IPADDRESSHERE 80     no            no
+```
+
+后端 2：
+
+```text
+Mode	  Name	                     Forwardto	    Address	      Port	 Encrypt(SSL)	 SSL checks 	Weight	Actions
+active 	Vaultwarden-Notifications  Address+Port:  IPADDRESSHERE 3012   no            no
+```
+
+### 前端创建
+
+**ACCESS CONTROL LIST**
+
+```text
+ACL1
+Path starts with:
+no
+yes
+/notifications/hub  
+ 	
+ACL2
+Path starts with:
+no
+no
+/notifications/hub/negotiate  
+ 	
+ACL3
+Path starts with:
+no
+no
+/notifications/hub  
+ 	
+ACL4
+Path starts with:
+no
+yes
+/notifications/hub/negotiate
+```
+
+**ACTIONS**
+
+```text
+Use Backend
+See below
+ACL1  
+backend: VaultWarden
+ 	
+Use Backend
+See below
+ACL2  
+backend: VaultWarden
+ 	
+Use Backend
+See below
+ACL3  
+backend: VaultWarden-Notifications
+ 	
+Use Backend
+See below
+ACL4
+backend: VaultWarden-Notifications
+```
+
+**DEFAULT BACKED**
+
+```text
+VaultWarden
+```
+
+完成！去测试吧！
+
+反过来，可以将下面的等效项添加到您的配置中。
+
+```text
+acl			ACL1	var(txn.txnpath) -m beg -i /notifications/hub
+acl			ACL2	var(txn.txnpath) -m beg -i /notifications/hub/negotiate
+acl			ACL3	var(txn.txnpath) -m beg -i /notifications/hub
+acl			ACL4	var(txn.txnpath) -m beg -i /notifications/hub/negotiate
+
+use_backend VaultWarden_ipvANY  if  !ACL1 
+use_backend VaultWarden_ipvANY  if  ACL2 
+use_backend VaultWarden-Notifications_ipvANY  if  ACL3 
+use_backend VaultWarden-Notifications_ipvANY  if  !ACL4 
+default_backend VanguardII_ipvANY
+```
+
+为了进行测试，如果您在浏览器中导航到 /notifications/hub，那么您应该会看到一个页面，上面写着“WebSocket Protocol Error: Unable to parse WebSocket key.”（WebSocket 协议错误：无法解析 WebSocket 密钥。） ……这意味着它可以正常工作！ - 所有其他子页面都应该出现 Rocket 错误。
 
