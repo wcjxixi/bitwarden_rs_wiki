@@ -534,9 +534,57 @@ Mode	  Name	                     Forwardto	    Address	      Port	 Encrypt(SSL)	
 active 	Vaultwarden-Notifications  Address+Port:  IPADDRESSHERE 3012   no            no
 ```
 
-### 前端创建
+### 前端创建-1-域名 <a id="frontend-creation-1-domain"></a>
 
 **ACCESS CONTROL LIST**
+
+```text
+ACL00
+Host matches:
+no
+no
+FQDN.com     -  注意：这需要是您的根域名。
+ 	
+ACL00
+Path starts with:
+no
+yes
+/big-ass-randomised-test-that-really-no-one-is-ever-going-to-type-DONT-USE-THIS-LINE-THOUGH-make-your-own-up
+
+ACL01
+Host matches:
+no
+no
+VAULTWARDEN.MYDOMAIN.COM
+
+ACL01
+Host matches:
+no
+no
+EXAMPLE-OTHER-SUB-DOMAIN-1.MYDOMAIN.COM
+
+ACL01
+Host matches:
+no
+no
+EXAMPLE-OTHER-SUB-DOMAIN-2.MYDOMAIN.COM
+```
+
+**ACTIONS-1-Domain**
+
+```text
+http-request allow
+See below
+ACL01
+
+http-request deny
+See below
+ACL00
+```
+
+### 前段创建-2-VaultWarden <a id="frontend-creation-2-vaultwarden"></a>
+
+ **ACCESS CONTROL LIST**
 
 ```text
 ACL1
@@ -562,9 +610,15 @@ Path starts with:
 no
 yes
 /notifications/hub/negotiate
+
+ACL5
+Path starts with:
+no
+no
+/admin
 ```
 
-**ACTIONS**
+ **ACTIONS - 2 - VaultWarden**
 
 ```text
 Use Backend
@@ -586,30 +640,57 @@ Use Backend
 See below
 ACL4
 backend: VaultWarden-Notifications
+
+http-request deny
+See below
+ACL5
 ```
 
-**DEFAULT BACKED**
+#### **更新记录** <a id="updates"></a>
 
 ```text
-VaultWarden
+Updated above 30/07 - 我在第一次配置后意识到，因为 ACL1-4 有 'Not'，他们正在将任何内容与他们的动作相匹配。所以 BlahBlahMcGee.FQDN.com 通过了。这不是故意的，所以上面添加了 ACL5 来解决这个问题，它还移除了对默认后端的需要。
+Updated again 30/07 - ^ 是的，没用。这一切都源于 HaProxy 不允许在 ACL 中使用 'AND'。唉。现在有了上面的内容，您可以为根域配置一个前端。这有一个否认本身，以及任何未指定的内容。因此，如果您要通过多个其他子域，则需要将它们全部添加到 ACL01 下。现在一切正常了！
 ```
 
-完成！去测试吧！
-
-反过来，可以将下面的等效项添加到您的配置中。
+#### 重要提示 <a id="important-notes"></a>
 
 ```text
+1) 您必须使域名前端与允许列表中的任何其他子域名保持同步
+2) 在域名前端，ACL01 必须位于 Actions 表的顶部 - 或至少在 ACL00 的上面
+3) ACL 名称的重复使用是故意的。是的，我没有打错它们。ACL00、ACL01 等等
+```
+
+#### 可选 <a id="optional"></a>
+
+```text
+上面的 ACL5 拒绝访问 /admin 门户。我不是特别喜欢没有任何形式的 2FA 且只有密码的管理门户。因此，当我不使用它时，我只是拒绝访问。如果我需要它，请取消阻止，完成所需的工作并重新阻止。
+```
+
+完成！可以去做测试了！
+
+反过来，可以将下面的等效项添加到您的配置中（请注意，这是一个示例摘要）。
+
+```text
+acl			ACL00	var(txn.txnhost) -m str -i VAULTWARDEN.MYDOMAIN.COM
+acl			ACL00	var(txn.txnpath) -m beg -i /big-ass-randomised-test-that-really-no-one-is-ever-going-to-type-DONT-USE-THIS-LINE-THOUGH-make-your-own-up
+acl			ACL01	var(txn.txnhost) -m str -i EXAMPLE-OTHER-SUB-DOMAIN-1.MYDOMAIN.COM
+acl			ACL01	var(txn.txnhost) -m str -i EXAMPLE-OTHER-SUB-DOMAIN-2.MYDOMAIN.COM
 acl			ACL1	var(txn.txnpath) -m beg -i /notifications/hub
 acl			ACL2	var(txn.txnpath) -m beg -i /notifications/hub/negotiate
 acl			ACL3	var(txn.txnpath) -m beg -i /notifications/hub
 acl			ACL4	var(txn.txnpath) -m beg -i /notifications/hub/negotiate
+acl			ACL5	var(txn.txnpath) -m beg -i /admin
 
+http-request allow  if  ACL01 
+http-request deny   if  !ACL00 
+http-request deny   if  !ACL5 
+http-request deny   if  ACL5 
 use_backend VaultWarden_ipvANY  if  !ACL1 
 use_backend VaultWarden_ipvANY  if  ACL2 
 use_backend VaultWarden-Notifications_ipvANY  if  ACL3 
 use_backend VaultWarden-Notifications_ipvANY  if  !ACL4 
-default_backend VanguardII_ipvANY
 ```
 
-为了进行测试，如果您在浏览器中导航到 /notifications/hub，那么您应该会看到一个页面，上面写着“WebSocket Protocol Error: Unable to parse WebSocket key.”（WebSocket 协议错误：无法解析 WebSocket 密钥。） ……这意味着它可以正常工作！ - 所有其他子页面都应该出现 Rocket 错误。
+为了进行测试，如果您在浏览器中导航到 /notifications/hub，那么您应该会看到一个页面，上面写着「WebSocket Protocol Error: Unable to parse WebSocket key.」（WebSocket 协议错误：无法解析 WebSocket 密钥。） ……这意味着它可以正常工作！ - 所有其他子页面都应该出现 Rocket 错误。
 
