@@ -41,9 +41,9 @@ CREATE USER vaultwarden WITH ENCRYPTED PASSWORD 'yourpassword';
 GRANT all privileges ON database vaultwarden TO vaultwarden;
 ```
 
-3、配置 vaultwarden 并启动它，以便 [diesel](http://diesel.rs/) 可以运行迁移并正确设置模式。除此之外不要做别的。
+3、配置 Vaultwarden 并启动它，以便 [diesel](http://diesel.rs/) 可以运行迁移并正确设置模式。除此之外不要做别的。
 
-4、停止 vaultwarden。
+4、停止 Vaultwarden。
 
 5、安装 [pgloader](http://pgloader.io/) 。
 
@@ -61,5 +61,5 @@ load database
 
 7、运行 `pgloader vaultwarden.load` 命令，你可能会看到一些警告，（不用理会）迁移会成功完成。
 
-8、重新启动 vaultwarden。
+8、重新启动 Vaultwarden。
 

@@ -1,4 +1,4 @@
-# 3.更新 vaultwarden 镜像
+# 3.更新 Vaultwarden 镜像
 
 {% hint style="success" %}
 对应的[页面地址](https://github.com/dani-garcia/vaultwarden/wiki/Updating-the-vaultwarden-image)
@@ -57,7 +57,7 @@ docker-compose start
 ```python
 sudo systemctl restart vaultwarden.service
 sudo docker system prune -f
-# 警告！这将删除已停止或未使用的容器，例如与 vaultwarden 不关联的容器
+# 警告！这将删除已停止或未使用的容器，例如与 Vaultwarden 无关的容器
 # 请仔细查看哪个容器是你需要的
 
 docker ps -a

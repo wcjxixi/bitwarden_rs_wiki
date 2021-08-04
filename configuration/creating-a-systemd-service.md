@@ -4,11 +4,11 @@
 对应的[页面地址](https://github.com/dani-garcia/vaultwarden/wiki/Setup-as-a-systemd-service)
 {% endhint %}
 
-这部分的内容要求您已经[编译了 vaultwarden 二进制](../deployment/building-binary.md)。如果您已生成了 docker 镜像，则需要查看[使用 systemd-docker 运行](running-with-systemd-docker.md)。
+这部分的内容要求您已经[编译了 Vaultwarden 二进制](../deployment/building-binary.md)。如果您已生成了 docker 镜像，则需要查看[使用 systemd-docker 运行](running-with-systemd-docker.md)。
 
 ## 设置 <a id="setup"></a>
 
-要使 vaultwarden 在系统启动的时候启动并使用 systemd 的其他功能（例如，隔离、日志记录等），则需要一个 `.service` 文件。以下是一个可行的起点：
+要使 Vaultwarden 在系统启动的时候启动并使用 systemd 的其他功能（例如，隔离、日志记录等），则需要一个 `.service` 文件。以下是一个可行的起点：
 
 ```python
 [Unit]
@@ -16,8 +16,8 @@ Description=Vaultwarden Server (Rust Edition)
 Documentation=https://github.com/dani-garcia/vaultwarden
 # 如果你使用 mariadb、mysql 或 postgresql 数据库， 
 # 你必须像下面这样添加它们，并去掉前面的 # 以取消注释。
-# 这将确保你的数据库服务器在 vaultwarden 之前启动("After")，
-# 并且在启动 vaultwarden 之前成功启动("Requires")。
+# 这将确保你的数据库服务器在 Vaultwarden 之前启动("After")，
+# 并且在启动 Vaultwarden 之前成功启动("Requires")。
 
 # 仅 sqlite
 After=network.target
@@ -91,15 +91,15 @@ $ sudo systemctl enable vaultwarden.service
 
 同理，你可以使用 `stop`、`restart` 和 `disable` 来停止、重启或禁用此服务。
 
-### 更新 vaultwarden <a id="updating-bitwarden_rs"></a>
+### 更新 Vaultwarden <a id="updating-bitwarden_rs"></a>
 
-编译新版本的 vaultwarden 之后，您可以复制已编译的（新）二进制文件并替换现有的（旧）二进制文件，然后重新启动服务：
+编译新版本的 Vaultwarden 之后，您可以复制已编译的（新）二进制文件并替换现有的（旧）二进制文件，然后重新启动服务：
 
 ```php
 $ sudo systemctl restart vaultwarden.service
 ```
 
-### 卸载 vaultwarden <a id="uninstalling-bitwarden_rs"></a>
+### 卸载 Vaultwarden <a id="uninstalling-bitwarden_rs"></a>
 
 在执行其他操作之前，应先停止并禁用该服务：
 
@@ -171,7 +171,7 @@ Feb 18 05:29:10 staging-bitwarden systemd[1]: vaultwarden.service: Main process 
 Feb 18 05:29:10 staging-bitwarden systemd[1]: vaultwarden.service: Failed with result 'exit-code'.
 ```
 
-已知当 vaultwarden 在容器（LXC 等）内或本地运行时，会出现这种情况。服务文件中的参数 `LimitNPROC=64` 使服务无法启动。注释掉这个参数后，服务可以正常启动。
+已知当 Vaultwarden 在容器（LXC 等）内或本地运行时，会出现这种情况。服务文件中的参数 `LimitNPROC=64` 使服务无法启动。注释掉这个参数后，服务可以正常启动。
 
 **注意：**systemd 覆盖文件不起作用，必须注释/删除该行。最简单的方法是通过
 

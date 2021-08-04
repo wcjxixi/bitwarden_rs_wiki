@@ -4,7 +4,7 @@
 对应的[页面地址](https://github.com/dani-garcia/vaultwarden/wiki/Disabling-or-overriding-the-Vault-interface-hosting)
 {% endhint %}
 
-为方便起见，vaultwarden 镜像还将托管网页密码库界面的静态文件。您可以通过设置 `WEB_VAULT_ENABLED` 环境变量来完全禁用静态文件的托管。
+为方便起见，Vaultwarden 镜像还将托管网页密码库界面的静态文件。您可以通过设置 `WEB_VAULT_ENABLED` 环境变量来完全禁用静态文件的托管。
 
 ```python
 docker run -d --name vaultwarden \
@@ -24,5 +24,5 @@ docker run -d --name vaultwarden \
   vaultwarden/server:latest
 ```
 
-请注意，您还可以通过为 `WEB_VAULT_FOLDER` 环境变量设置路径来更改 vaultwarden 查找静态文件的路径。
+请注意，您还可以通过为 `WEB_VAULT_FOLDER` 环境变量设置路径来更改 Vaultwarden 查找静态文件的路径。
 

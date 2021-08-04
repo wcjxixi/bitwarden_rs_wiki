@@ -101,7 +101,7 @@ volumes:
 
 ### 创建数据库和用户 <a id="create-database-and-user"></a>
 
-1、为 vaultwarden 创建一个新的（空）数据库（确保字符集和排序规则正确！）：
+1、为 Vaultwarden 创建一个新的（空）数据库（确保字符集和排序规则正确！）：
 
 ```sql
 CREATE DATABASE vaultwarden CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -144,9 +144,9 @@ FLUSH PRIVILEGES;
 
 1、首先遵循上面的步骤 1 和步骤 2
 
-2、配置 vaultwarden 并启动它，以便 [diesel](http://diesel.rs/) 可以运行迁移并正确设置模式。除此之外不要做别的。
+2、配置 Vaultwarden 并启动它，以便 [diesel](http://diesel.rs/) 可以运行迁移并正确设置模式。除此之外不要做别的。
 
-3、停止 vaultwarden。
+3、停止 Vaultwarden。
 
 4、使用下面的命令转储你现有的 SQLite 数据库。再次检查你的 sqlite 数据库的名称，默认应该是 db.sqlite。
 
@@ -174,16 +174,16 @@ cat sqlitedump.sql >> mysqldump.sql
 mysql --force --password --user=vaultwarden --database=vaultwarden < mysqldump.sql
 ```
 
-6、重新启动 vaultwarden。
+6、重新启动 Vaultwarden。
 
-_注意：使用_ _`--show-warnings`_ _加载_ _MySQL_ _转储时，会突出显示 datetime_ _字段在导入期间被截断了，这**似乎**还可以。_
+_注意：使用_ _`--show-warnings`_ _加载_ _MySQL_ _转储时，会突出显示 datetime_ _字段在导入期间被截断了，这**似乎**也不会有问题。_
 
 ```python
 Note (Code 1265): Data truncated for column 'created_at' at row 1
 Note (Code 1265): Data truncated for column 'updated_at' at row 1
 ```
 
-_注意：加载 mysqldump.sql 数据过程中出现加载错误_
+_注意 1：加载 mysqldump.sql 数据过程中出现加载错误_
 
 ```python
 error (1064): Syntax error near '"users" VALUES('9b5c2d13-8c4f-47e9-bd94-f0d7036ff581'*********)
@@ -201,4 +201,12 @@ use vaultwarden
 source /vw-data/mysqldump.sql
 exit
 ```
+
+_注意 2：如果 SQLite 数据库是从以前的某个旧版本迁移而来 ，MariaDB 可能会提示不匹配的值计数，例如：_
+
+```text
+ERROR 1136 (21S01) at line ###: Column count doesn't match value count at row 1
+```
+
+由于版本跳转，可能添加了新的数据库列。首先使用 SQLite 后端升级 Vaultwarden 以在 SQLite 数据库上运行迁移，切换到 MariaDB 后端，然后重复上述迁移步骤。或者，查找自您安装的版本以来添加迁移的提交并使用 `sqlite3` 手动运行迁移。
 

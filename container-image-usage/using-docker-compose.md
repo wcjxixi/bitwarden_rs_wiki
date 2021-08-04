@@ -4,11 +4,11 @@
 对应的[页面地址](https://github.com/dani-garcia/vaultwarden/wiki/Using-Docker-Compose)
 {% endhint %}
 
-[Docker Compose](https://docs.docker.com/compose/) 是一个用于定义和配置多容器应用程序的工具。在我们的例子中，我们希望 vaultwarden 服务器和代理都将 WebSocket 请求重定向到正确的地方。
+[Docker Compose](https://docs.docker.com/compose/) 是一个用于定义和配置多容器应用程序的工具。在我们的例子中，我们希望 Vaultwarden 服务器和代理都将 WebSocket 请求重定向到正确的地方。
 
 ## 带有 HTTP 验证的 Caddy <a id="caddy-with-http-challenge"></a>
 
-本示例假定您已[安装](https://docs.docker.com/compose/install/) Docker Compose，并且您的 vaultwarden 实例具有一个可以公开访问的域名（比如 `vaultwarden.example.com`）。
+本示例假定您已[安装](https://docs.docker.com/compose/install/) Docker Compose，并且您的 Vaultwarden 实例具有一个可以公开访问的域名（比如 `vaultwarden.example.com`）。
 
 首先创建一个新的目录，并切换到该目录下。接下来，创建下面的 `docker-compose.yml` 文件，确保将 `DOMAIN` 和 `EMAIL` 变量替换为适当的值。
 
@@ -66,7 +66,7 @@ services:
 
   # 将任何其他东西代理到 Rocket
   reverse_proxy vaultwarden:80 {
-       # 把真实的远程 IP 发送给 Rocket，让 vaultwarden 把其放在日志中
+       # 把真实的远程 IP 发送给 Rocket，让 Vaultwarden 把其放在日志中
        # 这样 fail2ban 就可以阻止正确的 IP 了
        header_up X-Real-IP {remote_host}
   }

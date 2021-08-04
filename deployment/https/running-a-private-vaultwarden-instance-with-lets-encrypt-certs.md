@@ -1,21 +1,21 @@
-# 2.使用 Let's Encrypt 证书运行私有 vaultwarden 实例
+# 2.使用 Let's Encrypt 证书运行私有 Vaultwarden 实例
 
 {% hint style="success" %}
 对应的[页面地址](https://github.com/dani-garcia/vaultwarden/wiki/Running-a-private-vaultwarden-instance-with-Let%27s-Encrypt-certs)
 {% endhint %}
 
-假设你希望运行一个只能从本地网络访问的 vaultwarden 实例，但你又希望此实例启用 HTTPS，此 HTTPS 证书由一个被广泛接受的 CA 而不是你自己的[私有 CA](../../other-information/private-ca-and-self-signed-certs-that-work-with-chrome.md) 来签署（以避免将专用CA证书加载到所有设备中的麻烦）。
+假设你希望运行一个只能从本地网络访问的 Vaultwarden 实例，但你又希望此实例启用 HTTPS，此 HTTPS 证书由一个被广泛接受的 CA 而不是你自己的[私有 CA](../../other-information/private-ca-and-self-signed-certs-that-work-with-chrome.md) 来签署（以避免将专用 CA 证书加载到所有设备中的麻烦）。
 
 本文将演示如何使用 [Caddy](https://caddyserver.com/) Web 服务器创建这样的设置，Caddy 内置了对诸多 DNS 提供商的 ACME 支持。我们将通过 ACME [DNS 验证方式](https://letsencrypt.org/docs/challenge-types/#dns-01-challenge)获取 Let's Encrypt 证书来配置 Caddy -- 在这里使用通常的 HTTP 验证方式的话会有问题，因为它依赖于 Let's Encrypt 服务器能够访问到你的内部 Web 服务器。
 
 {% hint style="info" %}
-请注意，本文涵盖了更通用的 DNS 验证设置，但许多用户可能会发现使用 Docker Compose 来集成 Caddy 和 vaultwarden 是最简单的。具体的例子请参见[使用 Docker Compose](../../container-image-usage/using-docker-compose.md#caddy-with-dns-challenge)。
+请注意，本文涵盖了更通用的 DNS 验证设置，但许多用户可能会发现使用 Docker Compose 来集成 Caddy 和 Vaultwarden 是最简单的。具体的例子请参见[使用 Docker Compose](../../container-image-usage/using-docker-compose.md#caddy-with-dns-challenge)。
 {% endhint %}
 
 涵盖了两个 DNS 提供商：
 
 * [Duck DNS](https://www.duckdns.org/) -- 为你提供一个 `duckdns.org` 下的子域名（例如 `my-bwrs.duckdns.org`）。如果你没有自己的域名，此选项是最简单的。 
-* [Cloudflare](https://www.cloudflare.com/) -- 这可以让你把你的 vaultwarden 实例放在你拥有或控制的域名下。请注意，Cloudflare 可以只作为一个 DNS 提供商使用（即不使用 Cloudflare 最著名的代理功能）。如果你目前没有自己的域名，你也许可以在 [Freenom](https://www.freenom.com/) 获得一个免费的域名。
+* [Cloudflare](https://www.cloudflare.com/) -- 这可以让你把你的 Vaultwarden 实例放在你拥有或控制的域名下。请注意，Cloudflare 可以只作为一个 DNS 提供商使用（即不使用 Cloudflare 最著名的代理功能）。如果你目前没有自己的域名，你也许可以在 [Freenom](https://www.freenom.com/) 获得一个免费的域名。
 
 当然也可以使用其他的网络服务器、[ACME 客户端](https://letsencrypt.org/docs/client-options/)和 DNS 提供商的组合来创建类似的设置，但你必须解决细节上的差异。
 
@@ -23,12 +23,12 @@
 
 由于大多数人不使用 DNS 验证方式，为每个 DNS 提供商自定义实现，因此 Caddy 默认没有内置此验证方式的支持。
 
-最简单的方式是通过 [https://caddyserver.com/download](https://caddyserver.com/download) 获取带有 DNS 验证模块的 Caddy 版本。选择您的平台，选中 `github.com/caddy-dns/cloudflare`（用于 Cloudflare）和/或 `github.com/caddy-dns/lego-deprecated`（用于 Duck DNS），然后点击下载。
+最简单的方式是通过 [https://caddyserver.com/download](https://caddyserver.com/download) 获取带有 DNS 验证模块的 Caddy 版本。选择您的平台，选中 `github.com/caddy-dns/cloudflare`（用于 Cloudflare）和/或 `github.com/caddy-dns/duckdns`（用于 Duck DNS），然后点击下载。
 
 如果你喜欢从源代码构建，你可以使用 [`xcaddy`](https://caddyserver.com/docs/build#xcaddy)。例如，要创建一个包含 Cloudflare 和 Duck DNS 支持的构建：
 
 ```python
-xcaddy build --with github.com/caddy-dns/cloudflare --with github.com/caddy-dns/lego-deprecated
+xcaddy build --with github.com/caddy-dns/cloudflare --with github.com/caddy-dns/duckdns
 ```
 
 将 `caddy` 二进制 移动到 `/usr/local/bin/caddy` 或其他合适的目录中。（可选）运行语句 `sudo setcap cap_net_bind_service=+ep /usr/local/bin/caddy` 以允许 `caddy` 而在特权端口（&lt; 1024）上监听，而无须以 root 身份运行。
@@ -42,7 +42,7 @@ xcaddy build --with github.com/caddy-dns/cloudflare --with github.com/caddy-dns/
 ```python
 {$DOMAIN}:443 {
     tls {
-        dns lego_deprecated duckdns
+        dns duckdns {$DUCKDNS_TOKEN}
     }
     reverse_proxy localhost:8080
     reverse_proxy /notifications/hub localhost:3012
@@ -71,11 +71,11 @@ export WEBSOCKET_ENABLED=true
 ./vaultwarden
 ```
 
-您现在应该可以通过 `https://my-vw.duckdns.org` 访问到您的 vaultwarden 实例了。
+您现在应该可以通过 `https://my-vw.duckdns.org` 访问到您的 Vaultwarden 实例了。
 
 ## Cloudflare 设置 <a id="cloudflare-setup"></a>
 
-如果您还没有账户，请在 [https://www.cloudflare.com/](https://www.cloudflare.com/) 创建一个；您还需要到您的域名注册商那里将名称服务器设置为 Cloudflare 分配给您的值。为您的 vaultwarden 实例创建一个子域名（例如，`vw.example.com`），将其 IP 地址设置为您的 vaultwarden 主机的私有 IP（例如，`192.168.1.100`）。例如：
+如果您还没有账户，请在 [https://www.cloudflare.com/](https://www.cloudflare.com/) 创建一个；您还需要到您的域名注册商那里将名称服务器设置为 Cloudflare 分配给您的值。为您的 Vaultwarden 实例创建一个子域名（例如，`vw.example.com`），将其 IP 地址设置为您的 Vaultwarden 主机的私有 IP（例如，`192.168.1.100`）。例如：
 
 ![](https://camo.githubusercontent.com/0e3cc1847c048fa874c2ca42d79b734d2eee88e0b36bfae7a52e1cf2a04a0b91/68747470733a2f2f692e696d6775722e636f6d2f4242767934596a2e706e67)
 
@@ -98,7 +98,7 @@ export WEBSOCKET_ENABLED=true
 ```python
 {$DOMAIN}:443 {
     tls {
-        dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+        dns cloudflare {$CLOUDFLARE_API_TOKEN}
     }
     reverse_proxy localhost:8080
     reverse_proxy /notifications/hub localhost:3012
@@ -148,6 +148,17 @@ export WEBSOCKET_ENABLED=true
 * `/usr/local/lego/.lego/certificates/my-vw.duckdns.org.crt` （证书）
 * `/usr/local/lego/.lego/certificates/my-vw.duckdns.org.key` （私钥）
 
+## 故障排除 <a id="troubleshooting"></a>
+
+### DNS 问题 <a id="dns-issues"></a>
+
+如果你的子域出现 DNS 解析错误（例如，`DNS_PROBE_FINISHED_NXDOMAIN` 或 `ERR_NAME_NOT_RESOLVED`），可能是你的 DNS 解析器阻止了解析，有以下原因：
+
+1. 出于安全原因，它阻止动态 DNS 服务。
+2. 为防止 [DNS 重定向攻击](https://en.wikipedia.org/wiki/DNS_rebinding)，或出于其他一些原因，它阻止域名解析到私有（RFC 1918）IP 地址。
+
+无论哪种情况，您都可以尝试使用其他 DNS 解析器，例如 Google 的 `8.8.8.8` 或 Cloudflare 的 `1.1.1.1`。对于第二种情况，如果您在 dnsmasq 或 Unbound 等本地 DNS 服务器后面运行，则可以将其配置为完全禁用 DNS 重新绑定保护，或允许某些域名返回私有地址。
+
 ## 参考 <a id="references"></a>
 
 ### DNS 验证 <a id="dns-challenge"></a>
@@ -161,6 +172,6 @@ export WEBSOCKET_ENABLED=true
 
 ### Caddy Duck DNS 组件 <a id="caddy-duck-dns-module"></a>
 
-* [https://github.com/caddy-dns/lego-deprecated](https://github.com/caddy-dns/lego-deprecated)
+* [https://github.com/caddy-dns/duckdns](https://github.com/caddy-dns/duckdns)
 * [https://go-acme.github.io/lego/dns/duckdns/](https://go-acme.github.io/lego/dns/duckdns/)
 

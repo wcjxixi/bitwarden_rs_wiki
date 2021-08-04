@@ -4,12 +4,12 @@
 对应的[页面地址](https://github.com/dani-garcia/vaultwarden/wiki/Enabling-HTTPS)
 {% endhint %}
 
-现在几乎都需要启用 [HTTPS](https://en.wikipedia.org/wiki/HTTPS)，才能满足 vaultwarden 的正常操作，这是因为 Bitwarden 网络密码库使用的 [Web Crypto API](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto)，大多数浏览器只有在 HTTPS 环境下才能使用。
+现在几乎都需要启用 [HTTPS](https://en.wikipedia.org/wiki/HTTPS)，才能满足 Vaultwarden 的正常操作，这是因为 Bitwarden 网络密码库使用的 [Web Crypto API](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto)，大多数浏览器只有在 HTTPS 环境下才能使用。
 
 启用 HTTPS 的几种方式：
 
-* （推荐）把 vaultwarden 放在一个[反向代理](https://en.wikipedia.org/wiki/Reverse_proxy)后面，代表 vaultwarden 处理 HTTPS 连接。
-* （不推荐）启用 vaultwarden 内置的 HTTPS 功能（通过 [Rocket](https://rocket.rs/) 网络框架）。Rocket 的 HTTPS 实现相对不成熟且有限。此方式也不支持 [WebSocket 通知](../../configuration/enabling-websocket-notifications.md)。
+* （推荐）把 Vaultwarden 放在一个[反向代理](https://en.wikipedia.org/wiki/Reverse_proxy)后面，代表 Vaultwarden 处理 HTTPS 连接。
+* （不推荐）启用 Vaultwarden 内置的 HTTPS 功能（通过 [Rocket](https://rocket.rs/) 网络框架）。Rocket 的 HTTPS 实现相对不成熟且有限。此方式也不支持 [WebSocket 通知](../../configuration/enabling-websocket-notifications.md)。
 
 有关这些选项的更多细节，请参考[启用 HTTPS](enabling-https.md#enabling-https) 部分。
 
@@ -19,7 +19,7 @@
 * （推荐）如果你信任 [Cloudflare](https://www.cloudflare.com/) 来代理你的流量，你可以让他们处理你的 SSL/TLS 证书的发放。请注意，上游的 Bitwarden 网络密码库（[https://vault.bitwarden.com/](https://vault.bitwarden.com/)）运行在 Cloudflare 后面。
 * （不推荐）[建立一个私人 CA](../../other-information/private-ca-and-self-signed-certs-that-work-with-chrome.md)，并发行你自己的（自签名）证书。这有各种陷阱和不便，所以请自行考虑是否使用此选项。
 
-参考[获取 SSL/TLS 证书](enabling-https.md#getting-ssl-tls-certificates)部分，以了解这些选项的更多细节。
+参考[获取 SSL/TLS 证书](enabling-https.md#getting-ssl-tls-certificates)部分，以了解这些选项的更多细节。要使移动应用程序正常运行，必须设置正确的 [OCSP 装订](https://en.wikipedia.org/wiki/OCSP_stapling)设置。
 
 ## 启用 HTTPS <a id="enabling-https"></a>
 
@@ -53,7 +53,7 @@ ROCKET_TLS={certs="/path/to/certs.pem",key="/path/to/key.pem"}
 
   （环境变量本身的格式没有错误；只是因为 Rocket 无法解析证书/密钥内容。）
 
-* 如果在 Docker 下运行，请记住，vaultwarden 在容器内部运行时将解析 `ROCKET_TLS` 值 ，所以请确保 `certs` 和 `key` 路径是容器内部呈现的样子（可能与 Docker 主机系统上的路径不同）。
+* 如果在 Docker 下运行，请记住，Vaultwarden 在容器内部运行时将解析 `ROCKET_TLS` 值 ，所以请确保 `certs` 和 `key` 路径是容器内部呈现的样子（可能与 Docker 主机系统上的路径不同）。
 
 ```python
 docker run -d --name vaultwarden \
@@ -78,7 +78,7 @@ docker run -d --name vaultwarden \
 
 这些文件链接到  `../../archive/mydomain/privkey.pem`。
 
-因此，从 vaultwarden 容器中使用，应像这样：
+因此，从 Vaultwarden 容器中使用，应像这样：
 
 ```python
 docker run -d --name vaultwarden \
@@ -91,19 +91,19 @@ docker run -d --name vaultwarden \
 
 #### 检查证书是否有效 <a id="check-if-certificate-is-valid"></a>
 
-当您的 vaultwarden 服务器对外界可用时，您可以使用 [https://comodosslstore.com/ssltools/ssl-checker.php](https://comodosslstore.com/ssltools/ssl-checker.php) 网站来检查 SSL 证书是否包含证书链。缺少证书链，Android 设备将无法连接。
+当您的 Vaultwarden 服务器对外界可用时，您可以使用 [Comodo SSL Checker](https://comodosslstore.com/ssltools/ssl-checker.php)，[Qualys' SSL Labs](https://www.ssllabs.com/ssltest/) 或 [Digicert SSL Certficate Checker](https://www.digicert.com/help/) 来检查您的 SSL 证书（包括证书链）是否有效。缺少证书链，Android 设备将连接失败。
 
-您也可以使用 [https://www.ssllabs.com/ssltest/analyze.html](https://www.ssllabs.com/ssltest/analyze.html) 网站进行检查，但是它不支持自定义端口。另外，请记住选中“Do not show the results on the boards”复选框，否则您的系统将在「Recently Seen」列表中可见。
+您可以使用 [Qualys' SSL Labs](https://www.ssllabs.com/ssltest/analyze.html) 检查，但它不支持自定义端口。另外，请记住选中「Do not show the results on the boards」复选框，否则您的系统将在「Recently Seen」列表中可见。
 
-如果您运行的是没有与公共 Internet 连接的本地服务器，则可以使用 openssl 工具来验证您的证书。
+如果您运行的是没有与公共 Internet 连接的本地服务器，则可以使用 `openssl` 命令，[testssl.sh](https://testssl.sh/) 或 [SSLScan](https://github.com/rbsec/sslscan/) 来验证证书的有效性。
 
 执行以下操作以验证证书是否随链安装（注意将 vault.domain.com 改为您自己的域名）：
 
 ```python
-openssl s_client -showcerts -connect vault.domain.com:443
+openssl s_client -showcerts -connect vault.domain.com:443 -servername vault.domain.com
 
-# 或者您使用的其他端口，比如 7070
-openssl s_client -showcerts -connect vault.domain.com:7070
+# 或者不同的端口，比如 7070
+openssl s_client -showcerts -connect vault.domain.com:7070 -servername vault.domain.com
 ```
 
 输出的开头应类似于以下内容（使用 Let's Encrypt 证书）：
@@ -120,15 +120,19 @@ verify return:1
 
 有 3 个不同深度（请注意，它是从 0 开始的）级别的验证。在接下来的输出中，您应该看到来自 Let's Encryptbase 的使用 base64 编码的证书信息。
 
+#### 检查 OSCP 有效性 <a id="check-oscp-validity"></a>
+
+如果 OCSP 装订无法正常工作，则连接移动应用程序将失败，并显 `Chain validation failed` 消息。正确设置 OCSP 装订后，[Digicert SSL Checker](https://www.digicert.com/help/) 的吊销检查部分将包含「OCSP Staple: Good」。您的网络服务器必须能够连接到证书的 X509v3 扩展中的「Authority Information Access」URL，才能使 OCSP 装订工作。
+
 ## 获取 SSL/TLS 证书 <a id="getting-ssl-tls-certificates"></a>
 
 ### 通过 Let's Encrypt <a id="via-lets-encrypt"></a>
 
 [Let's Encrypt](https://letsencrypt.org/) 免费发放 SSL/TLS 证书。
 
-为了使之工作，你的 vaultwarden 实例必须拥有一个 DNS 名称（即你不能简单地使用 IP 地址）。如果你的 vaultwarden 可以在公共互联网上访问，那么设置 Let's Encrypt 就比较容易，但即使你的实例是私有的（即只能在你的局域网上访问），也可以通过 [DNS 挑战](running-a-private-vaultwarden-instance-with-lets-encrypt-certs.md)获取 Let's Encrypt 证书。
+为了使之工作，你的 Vaultwarden 实例必须拥有一个 DNS 名称（即你不能简单地使用 IP 地址）。如果你的 vaultwarden 可以在公共互联网上访问，那么设置 Let's Encrypt 就比较容易，但即使你的实例是私有的（即只能在你的局域网上访问），也可以通过 [DNS 挑战](running-a-private-vaultwarden-instance-with-lets-encrypt-certs.md)获取 Let's Encrypt 证书。
 
-如果你已经拥有或控制了一个域名，那么只需为你的 vaultwarden 实例的 IP 地址添加一个 DNS 名称即可。如果你没有，你可以购买一个域名，尝试在 [Freenom](https://www.freenom.com/) 免费获得一个，或者使用像 [Duck DNS](https://www.duckdns.org/) 这样的服务来获取一个现有域名下的名称（例如，`my-bitwarden.duckdns.org`）。
+如果你已经拥有或控制了一个域名，那么只需为你的 Vaultwarden 实例的 IP 地址添加一个 DNS 名称即可。如果你没有，你可以购买一个域名，尝试在 [Freenom](https://www.freenom.com/) 免费获得一个，或者使用像 [Duck DNS](https://www.duckdns.org/) 这样的服务来获取一个现有域名下的名称（例如，`my-bitwarden.duckdns.org`）。
 
 拥有了实例的 DNS 名称后，您就可以使用 [ACME 客户端](https://letsencrypt.org/docs/client-options/)为你的 DNS 名称获取证书。[Certbot](https://certbot.eff.org/) 和 [acme.sh](https://github.com/acmesh-official/acme.sh) 是两个最流行的独立客户端。一些反向代理（例如 [Caddy](https://caddyserver.com/)）也内置了 ACME 客户端。
 
@@ -136,9 +140,9 @@ verify return:1
 
 [Cloudflare](https://www.cloudflare.com/) 为个人提供免费服务。如果你信任他们代理你的流量，并作为你的 DNS 供应商，你也可以让他们处理你的 SSL/TLS 证书的发放。
 
-注册您的域名并为您的 vaultwarden 实例添加了 DNS 记录后，登录 Cloudflare 仪表板并选择 `SSL/TLS`，然后选择 `Origin Server`。生成一个原始证书（你可以选择最长 15 年的有效期），并配置 vaultwarden 来使用它。如果你选择了 15 年有效期，那么在可预见的未来，无需续签此原始证书。
+注册您的域名并为您的 Vaultwarden 实例添加了 DNS 记录后，登录 Cloudflare 仪表板并选择 `SSL/TLS`，然后选择 `Origin Server`。生成一个原始证书（你可以选择最长 15 年的有效期），并配置 Vaultwarden 来使用它。如果你选择了 15 年有效期，那么在可预见的未来，无需续签此原始证书。
 
-请注意，原始证书仅用于确保 Cloudflare 和 vaultwarden 之间的通信。Cloudflare 将自动处理用于客户端和 Cloudflare 之间通信的证书的发放和更新。
+请注意，原始证书仅用于确保 Cloudflare 和 Vaultwarden 之间的通信。Cloudflare 将自动处理用于客户端和 Cloudflare 之间通信的证书的发放和更新。
 
-另外，如果你使用的是 vaultwarden 内置的 Rocket HTTPS 服务器，请确保选择 `RSA` 作为原始证书的私钥类型，因为 Rocket 目前不支持 ECC/ECDSA 证书。
+另外，如果你使用的是 Vaultwarden 内置的 Rocket HTTPS 服务器，请确保选择 `RSA` 作为原始证书的私钥类型，因为 Rocket 目前不支持 ECC/ECDSA 证书。
 

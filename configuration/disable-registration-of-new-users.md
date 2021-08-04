@@ -33,5 +33,5 @@ docker run -d --name vaultwarden \
 
 ## 通过管理页面发出邀请 <a id="invitations-via-the-admin-page"></a>
 
-vaultwarden 管理员可以通过[管理页面](enabling-admin-page.md)邀请任何人，不受以上限制。
+Vaultwarden 管理员可以通过[管理页面](enabling-admin-page.md)邀请任何人，不受以上限制。
 

@@ -4,7 +4,7 @@
 对应的[页面地址](https://github.com/dani-garcia/vaultwarden/wiki/Building-binary)
 {% endhint %}
 
-这个页面主要是给那些对 vaultwarden 开发感兴趣，或者有特殊原因想要构建自己的二进制的人。
+这个页面主要是给那些对 Vaultwarden 开发感兴趣，或者有特殊原因想要构建自己的二进制的人。
 
 普通用户应该使用从基于 Alpine 的 Docker 镜像中[提取的预构建二进制](pre-built-binaries.md)文件，[通过 Docker 部署](../container-image-usage/which-container-image-to-use.md)，或者[寻找第三方软件包](third-party-packages.md)。
 
@@ -67,7 +67,7 @@ cargo build --features postgresql --release
 如果您希望手动编译它，请遵循如下的步骤：
 
 {% hint style="warning" %}
-构建密码库需要约 1.5GB 的 RAM。在具有 1GB 或更小容量的 RaspberryPI 之类的系统上，请[启用交换功能](https://www.tecmint.com/create-a-linux-swap-file/)或在功能更强大的计算机上构建，然后从那里复制目录。仅构建时需要大量内存，而运行带密码库的 vaultwarden 仅需要约 10MB 的 RAM。
+构建密码库需要约 1.5GB 的 RAM。在具有 1GB 或更小容量的 RaspberryPI 之类的系统上，请[启用交换功能](https://www.tecmint.com/create-a-linux-swap-file/)或在功能更强大的计算机上构建，然后从那里复制目录。仅构建时需要大量内存，而运行带密码库的 Vaultwarden 仅需要约 10MB 的 RAM。
 {% endhint %}
 
 1、克隆 [bitwarden/web](https://github.com/bitwarden/web) git 库，并检查最新的发行标签（例如 v2.1.1）：

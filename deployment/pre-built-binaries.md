@@ -4,7 +4,7 @@
 对应的[页面地址](https://github.com/dani-garcia/vaultwarden/wiki/Pre-built-binaries)
 {% endhint %}
 
-vaultwarden 目前并没有提供独立的二进制文件作为单独的下载，但对于拥有基于 Alpine 的 Docker 镜像的平台（当前是 x86-64 和 ARMv7），您可以从官方的 Docker 镜像中提取独立的、静态链接的二进制文件。每个 Docker 镜像还包括一个匹配的网页密码库构建（与平台无关）。
+Vaultwarden 目前并没有提供独立的二进制文件作为单独的下载，但对于拥有基于 Alpine 的 Docker 镜像的平台（当前是 x86-64 和 ARMv7），您可以从官方的 Docker 镜像中提取独立的、静态链接的二进制文件。每个 Docker 镜像还包括一个匹配的网页密码库构建（与平台无关）。
 
 ## 在已安装 Docker 情况下提取二进制文件 <a id="extracting-binaries-with-docker-installed"></a>
 
@@ -18,7 +18,7 @@ docker cp vm:/web-vault .
 docker rm vm
 ```
 
-如果您想获取不同平台的二进制文件（例如，你的 x86-64 机器上只安装了 Docker，但您想在 Raspberry Pi 上运行 vaultwarden）， 将 `--platform` 选项添加到 `docker pull` 命令中：
+如果您想获取不同平台的二进制文件（例如，你的 x86-64 机器上只安装了 Docker，但您想在 Raspberry Pi 上运行 Vaultwarden）， 将 `--platform` 选项添加到 `docker pull` 命令中：
 
 ```python
 docker pull --platform linux/arm/v7 vaultwarden/server:alpine

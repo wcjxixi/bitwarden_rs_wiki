@@ -4,7 +4,7 @@
 对应的[页面地址](https://github.com/dani-garcia/vaultwarden/wiki/Logging)
 {% endhint %}
 
-默认情况下，vaultwarden 仅记录到[标准输出](https://zh.wikipedia.org/wiki/%E6%A8%99%E6%BA%96%E4%B8%B2%E6%B5%81)（stdout）。您也可以将它配置为记录到文件。
+默认情况下，Vaultwarden 仅记录到[标准输出](https://zh.wikipedia.org/wiki/%E6%A8%99%E6%BA%96%E4%B8%B2%E6%B5%81)（stdout）。您也可以将它配置为记录到文件。
 
 ## 记录到文件 <a id="logging-to-a-file"></a>
 

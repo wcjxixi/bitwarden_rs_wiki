@@ -26,7 +26,7 @@
 
 * [https://github.com/martient/vaultwarden-ansible](https://github.com/martient/vaultwarden-ansible)
 
-raspberry pi 上 vaultwarden 的 Ansible 部署。要从以前的配置迁移，请遵循本指南 [https://martient.medium.com/migrate-from-bitwarden-rs-to-vaultwarden-199aeb6927a3](https://martient.medium.com/migrate-from-bitwarden-rs-to-vaultwarden-199aeb6927a3)
+raspberry pi 上 Vaultwarden 的 Ansible 部署。要从以前的配置迁移，请遵循本指南 [https://martient.medium.com/migrate-from-bitwarden-rs-to-vaultwarden-199aeb6927a3](https://martient.medium.com/migrate-from-bitwarden-rs-to-vaultwarden-199aeb6927a3)
 
 ## 共享主机 <a id="shared-hosting"></a>
 
@@ -85,7 +85,7 @@ raspberry pi 上 vaultwarden 的 Ansible 部署。要从以前的配置迁移，
 }
 ```
 
-如果你有任何关于这部分的问题，请随时联系我。我在 matrix 的  @litschi:litschi.xyz 、以及 IRC（hackint 和 freenode）的 litschi，或简单地在 matrix.org 的 vaultwarden 频道中询咨询我。
+如果你有任何关于这部分的问题，请随时联系我。我在 matrix 的  @litschi:litschi.xyz 、以及 IRC（hackint 和 freenode）的 litschi，或简单地在 matrix.org 的 Vaultwarden 频道中询咨询我。
 
 ## QNAP NAS \(ARM 和 x86\) <a id="qnap-nas-arm-and-x-86"></a>
 

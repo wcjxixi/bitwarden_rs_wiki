@@ -4,7 +4,7 @@
 对应的[页面地址](https://github.com/dani-garcia/vaultwarden/wiki/Supporting-upstream)
 {% endhint %}
 
-vaultwarden 仅提供 API（服务器）端实现，用户仍依赖来自上游的客户端程序（移动应用程序、桌面应用程序和网页密码库），这些都是 8bit Solutions LLC 公司在上游完成的许多工作。同时 vaultwarden 支持上游的某些付费功能并免费提供该功能。这就提出了一些有关[维持和支持上游发展的问题](https://github.com/dani-garcia/vaultwarden/issues/331)。许多用户提出了这个问题，并咨询他们如何在使用 vaultwarden 的同时支持上游的发展。
+Vaultwarden 仅提供 API（服务器）端实现，用户仍依赖来自上游的客户端程序（移动应用程序、桌面应用程序和网页密码库），这些都是 8bit Solutions LLC 公司在上游完成的许多工作。同时 Vaultwarden 支持上游的某些付费功能并免费提供该功能。这就提出了一些有关[维持和支持上游发展的问题](https://github.com/dani-garcia/vaultwarden/issues/331)。许多用户提出了这个问题，并咨询他们如何在使用 Vaultwarden 的同时支持上游的发展。
 
 ## 捐赠 <a id="donating"></a>
 
@@ -12,11 +12,11 @@ vaultwarden 仅提供 API（服务器）端实现，用户仍依赖来自上游�
 
 ## 购买许可证 <a id="buying-a-licence"></a>
 
-许多用户只是购买适当的许可证以进行部署，但放在那里从未使用它。这也是一种捐赠，因为 vaultwarden 不能以任何方式使用许可证。
+许多用户只是为他们的部署购买了合适的许可证，但放在那里从未使用它。这也是一种捐赠，因为 Vaultwarden 不能以任何方式使用许可证。
 
 ## 帮助翻译应用程序 <a id="help-translating-the-apps"></a>
 
-每一个应用程序都有 [Crowdin 项目](https://crowdin.com/profile/kspearrin)。如果您精通英语以外的其他语言，则可以帮助翻译应用程序。
+每一个应用程序都有 [Crowdin 项目](https://crowdin.com/profile/kspearrin)。如果您精通英语以外的其他语言，则可以帮助翻译这些应用程序。
 
 ## 测试并报告客户端中的 bug <a id="testing-reporting-bugs-in-clients"></a>
 
@@ -24,5 +24,5 @@ vaultwarden 仅提供 API（服务器）端实现，用户仍依赖来自上游�
 
 ## 帮助社区中的其他用户 <a id="helping-other-users-in-the-community"></a>
 
-有很多新用户有时会遇到一些基本问题。帮助他们是支持这个项目（并使社区发展壮大）的好方法。根据我在 vaultwarden 周围的社区经验，很高兴看到人们在我回答他们的问题之前就真正地互相帮助了。这节省了时间，也使我经常学到新的东西。[Reddit 上的 Bitwarden 社区](https://www.reddit.com/r/bitwarden)，也有[官方论坛](https://community.bitwarden.com/)。
+有很多新用户有时会遇到一些基础问题。帮助他们是支持此项目（并使社区发展壮大）的一个好方式。根据我在 Vaultwarden 周围的社区经验，很高兴看到人们在我回答他们的问题之前就真正地互相帮助了。这节省了时间，也使我经常学到新的东西。[Reddit 上的 Bitwarden 社区](https://www.reddit.com/r/bitwarden)，也有[官方论坛](https://community.bitwarden.com/)。
 

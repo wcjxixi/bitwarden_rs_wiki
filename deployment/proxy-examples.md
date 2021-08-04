@@ -4,13 +4,13 @@
 对应的[页面地址](https://github.com/dani-garcia/vaultwarden/wiki/Proxy-examples)
 {% endhint %}
 
-在此文档中，`<SERVER>` 指用于访问 vaultwarden 的 IP 或域名，如果代理和 vaultwarden 两者在同一系统中运行，简单地使用 `localhost` 即可。
+在此文档中，`<SERVER>` 指用于访问 Vaultwarden 的 IP 或域名，如果代理和 Vaultwarden 两者在同一系统中运行，简单地使用 `localhost` 即可。
 
-默认情况下，vaultwarden 在端口 80 上监听网页（REST API）流量，在端口 3012 上监听 WebSocket 流量（如果启用了 [WebSocket](../configuration/enabling-websocket-notifications.md) 通知）。反向代理应该被配置为终止 SSL/TLS 连接（最好是在 443 端口，HTTPS 的标准端口）。然后，反向代理将传入的客户端请求传递给端口 80 或 3012（视情况而定）的 vaultwarden，并在收到 vaultwarden 的响应后，将该响应传回客户端。
+默认情况下，Vaultwarden 在端口 80 上监听网页（REST API）流量，在端口 3012 上监听 WebSocket 流量（如果启用了 [WebSocket](../configuration/enabling-websocket-notifications.md) 通知）。反向代理应该被配置为终止 SSL/TLS 连接（最好是在 443 端口，HTTPS 的标准端口）。然后，反向代理将传入的客户端请求传递给端口 80 或 3012（视情况而定）的 Vaultwarden，并在收到 Vaultwarden 的响应后，将该响应传回客户端。
 
-注意，当你把 vaultwarden 放在反向代理后面时，反向代理和 vaultwarden 之间的连接通常被认为是通过安全的私有网络进行的，因此不需要加密。下面的例子假设你是在这种配置下运行的，在这种情况下，不应该启用 vaultwarden 中内置的 HTTPS 功能（也就是说，不应该设置 `ROCKET_TLS` 环境变量）。如果你这样做了，连接就会失败，因为反向代理使用 HTTP 连接到 vaultwarden，但你配置的 vaultwarden 却希望使用 HTTPS。
+注意，当你把 Vaultwarden 放在反向代理后面时，反向代理和 Vaultwarden 之间的连接通常被认为是通过安全的私有网络进行的，因此不需要加密。下面的例子假设你是在这种配置下运行的，在这种情况下，不应该启用 Vaultwarden 中内置的 HTTPS 功能（也就是说，不应该设置 `ROCKET_TLS` 环境变量）。如果你这样做了，连接就会失败，因为反向代理使用 HTTP 连接到 Vaultwarden，但你配置的 Vaultwarden 却希望使用 HTTPS。
 
-通常使用 [Docker Compose](https://docs.docker.com/compose/) 将容器化的服务（例如，vaultwarden 和反向代理）链接在一起。请参阅[使用 Docker Compose](../container-image-usage/using-docker-compose.md) 了解这方面的示例。
+通常使用 [Docker Compose](https://docs.docker.com/compose/) 将容器化的服务（例如，Vaultwarden 和反向代理）链接在一起。请参阅[使用 Docker Compose](../container-image-usage/using-docker-compose.md) 了解这方面的示例。
 
  Web 服务器的安全 TLS 协议和密码配置可以使用 Mozilla 的 [SSL Configuration Generator](https://ssl-config.mozilla.org/) 来生成。所有支持的浏览器和移动应用程序都可以使用这个「流行的」配置方式。
 
@@ -140,7 +140,7 @@ server {
 
 ## Nginx with sub-path \(by BlackDex\)
 
-在这个示例中，vaultwarden 的访问地址为 `https://vaultwarden.example.tld/vault/`，如果您想使用任何其他的子路径，比如 `vaultwarden` 或 `secret-vault`，您需要更改下面示例中相应的地方。
+在这个示例中，Vaultwarden 的访问地址为 `https://vaultwarden.example.tld/vault/`，如果您想使用任何其他的子路径，比如 `vaultwarden` 或 `secret-vault`，您需要更改下面示例中相应的地方。
 
 为此，您需要配置 `DOMAIN` 变量以使其匹配，它应类似于：
 
@@ -222,7 +222,7 @@ server {
 
 ## Nginx \(by ypid\)
 
-使用 DebOps 配置 nginx 作为 vaultwarden 的反向代理的清单示例。 我选择在 URL 中使用 PSK 以获得额外的安全性，从而不会将 API 公开给 Internet 上的每个人，因为客户端应用程序尚不支持客户端证书（我对其进行了测试）。 注意：使用 subpath/PSK 需要修补源代码并重新编译，请参考：[https://github.com/dani-garcia/vaultwarden/issues/241\#issuecomment-436376497](https://github.com/dani-garcia/bitwarden_rs/issues/241#issuecomment-436376497)。 /admin 未经测试。 有关安全性子路径托管的一般讨论，请参阅：[https://github.com/debops/debops/issues/1233](https://github.com/debops/debops/issues/1233)
+使用 DebOps 配置 nginx 作为 Vaultwarden 的反向代理的清单示例。 我选择在 URL 中使用 PSK 以获得额外的安全性，从而不会将 API 公开给 Internet 上的每个人，因为客户端应用程序尚不支持客户端证书（我对其进行了测试）。 注意：使用 subpath/PSK 需要修补源代码并重新编译，请参考：[https://github.com/dani-garcia/vaultwarden/issues/241\#issuecomment-436376497](https://github.com/dani-garcia/bitwarden_rs/issues/241#issuecomment-436376497)。 /admin 未经测试。 有关安全性子路径托管的一般讨论，请参阅：[https://github.com/debops/debops/issues/1233](https://github.com/debops/debops/issues/1233)
 
 ```python
 bitwarden__fqdn: 'vault.example.org'
