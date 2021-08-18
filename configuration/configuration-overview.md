@@ -22,7 +22,7 @@
 
 如果你将这些环境变量保存在一个名为 `.env` 的文件中，你可以按照以下方式加载它们：
 
-* 如果是独立版的 Vaultwarden，将 `.env` 放到当前工作目录中，Vaultwarden 会在启动时尝试加载这个文件。请注意，Vaultwarden 仅查找名为 `.env` 的环境文件；而不会查找具有其他名称的环境文件。
+* 对于独立版的 Vaultwarden，将 `.env` 放到当前工作目录中，Vaultwarden 会在启动时尝试加载这个文件。请注意，Vaultwarden 仅查找名为 `.env` 的环境文件；而不会查找具有其他名称的环境文件。
 * 对于 Docker，使用 `docker run --env-file <env-file> ...`（让 Docker 加载 `.env` 文件）或 `docker run -v /path/to/.env:/.env`（让 Vaultwarden 从容器内部加载 `.env` 文件）。请注意，如果使用 `--env-file`，Docker 不会取消引用值，因此请确保使用 `key=val` 而不是 `key="val"` 或 `key='val'`。
 * 对于 Docker Compose，使用 [`env_file`](https://docs.docker.com/compose/environment-variables/#the-env_file-configuration-option) 指令。
 
