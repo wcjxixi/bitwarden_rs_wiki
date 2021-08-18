@@ -76,13 +76,16 @@
   #   path /admin*
   # }
   # redir @insecureadmin /
-
+  
+  # The negotiation endpoint 也被代理到 Rocket
+  reverse_proxy /notifications/hub/negotiate <SERVER>:80
+  
   # Notifications 重定向到 websockets 服务器
   reverse_proxy /notifications/hub <SERVER>:3012
 
-  # 将任何其他东西代理到 Rocket
+  # 代理 Root 目录到 Rocket
   reverse_proxy <SERVER>:80 {
-       # 把真实的远程 IP 发送给 Rocket，让 bitwarden_rs 把其放在日志中
+       # 把真实的远程 IP 发送给 Rocket，让 vaultwarden 把其放在日志中
        # 这样 fail2ban 就可以阻止正确的 IP 了
        header_up X-Real-IP {remote_host}
   }
@@ -136,6 +139,15 @@ server {
   }
 
 }
+```
+
+如果遇到 504 Gateway Timeout（网关超时）故障，可以通过在 `server {` 部分添加更长的超时时间来告诉 nginx 等待 Vaultwarden 的时间，例如：
+
+```text
+  proxy_connect_timeout       777;
+  proxy_send_timeout          777;
+  proxy_read_timeout          777;
+  send_timeout                777;
 ```
 
 ## Nginx with sub-path \(by BlackDex\)

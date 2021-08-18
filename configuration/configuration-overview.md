@@ -16,10 +16,14 @@
 
 造成这种混乱的一个常见原因就是因为启用了管理页面（创建了 `config.json` 文件），通过管理页面更改了某些设置（在 `config.json` 文件中设置相应的值），然后又尝试通过环境变量更改这些设置（此操作无效，因为 `config.json` 覆盖环境变量）。为避免这种混乱，强烈建议您采用其中一种配置方式。也就是说，完全通过环境变量或完全通过 `config.json`（无论是使用管理页面还是直接编辑 `config.json`）进行配置。
 
-请注意，管理页面中的 `Read-Only Config` 部分下的配置设置只能通过环境变量来设置，所以你必须重启 Vaultwarden 才能使对它们的更改生效。如果你将这些环境变量保存在一个名为 `.env` 的文件中，你可以按照以下方式加载它们：
+请注意，管理页面中的 `Read-Only Config` 部分下的配置设置只能通过环境变量来设置，所以你必须重启 Vaultwarden 才能使对它们的更改生效。
 
-* 如果是独立版的 vaultwarden，将 `.env` 放到当前工作目录中，Vaultwarden 会在启动时尝试加载这个文件。
-* 对于 Docker，使用 `docker run --env-file <env-file> ...`（让 Docker 加载 `.env` 文件）或 `docker run -v /path/to/.env:/.env`（让 Vaultwarden 从容器内部加载 `.env` 文件）。
+## 从文件加载环境变量 <a id="loading-environment-variables-from-a-file"></a>
+
+如果你将这些环境变量保存在一个名为 `.env` 的文件中，你可以按照以下方式加载它们：
+
+* 如果是独立版的 Vaultwarden，将 `.env` 放到当前工作目录中，Vaultwarden 会在启动时尝试加载这个文件。请注意，Vaultwarden 仅查找名为 `.env` 的环境文件；而不会查找具有其他名称的环境文件。
+* 对于 Docker，使用 `docker run --env-file <env-file> ...`（让 Docker 加载 `.env` 文件）或 `docker run -v /path/to/.env:/.env`（让 Vaultwarden 从容器内部加载 `.env` 文件）。请注意，如果使用 `--env-file`，Docker 不会取消引用值，因此请确保使用 `key=val` 而不是 `key="val"` 或 `key='val'`。
 * 对于 Docker Compose，使用 [`env_file`](https://docs.docker.com/compose/environment-variables/#the-env_file-configuration-option) 指令。
 
 ## 配置选项 <a id="configuration-options"></a>
