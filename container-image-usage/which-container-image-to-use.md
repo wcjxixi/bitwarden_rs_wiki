@@ -6,7 +6,7 @@
 
 `vaultwarden` 从版本 1.17.0 开始，提供了一个单一的 Docker 镜像（[`vaultarden/server`](https://hub.docker.com/r/vaultwarden/server)），该镜像对 SQLite、MySQL 和 PostgreSQL 数据库后端提供统一的支持。在该版本之前，每一种数据库后端都有单独的镜像（请参阅[历史镜像](which-container-image-to-use.md#historical-images)）。
 
-`vaultwarden/server` 是一个多架构的镜像，这意味着它在一个镜像名下支持多种 CPU 架构。假设你运行的是支持的架构之一，简单地拉取 `vaultwarden/server`  会自动产生适合你的环境的特定架构的镜像，但 Armv6 板卡可能除外，比如 Raspberry Pi 1 和 Zero（请参阅 [moby/moby\#41017](https://github.com/moby/moby/issues/41017)）。运行 Docker 20.10.0 以及更高版本的 Armv6 用户可以像通常那样简单地拉取 `vaultwarden/server` 多架构镜像，运行早期 Docker 版本的 Armv6 用户必须在镜像标签中指定 `arm32v6` 标签，例如 `latest- arm32v6`。
+`vaultwarden/server` 是一个多架构镜像，这意味着它在一个镜像名下支持多种 CPU 架构。假设你运行的是支持的架构之一，简单地拉取 `vaultwarden/server`  会自动产生适合你的环境的特定架构的镜像，但 Armv6 板卡可能除外，比如 Raspberry Pi 1 和 Zero（请参阅 [moby/moby\#41017](https://github.com/moby/moby/issues/41017)）。运行 Docker 20.10.0 以及更高版本的 Armv6 用户可以像通常那样简单地拉取 `vaultwarden/server` 多架构镜像，运行早期 Docker 版本的 Armv6 用户必须在镜像标签中指定 `arm32v6` 标签，例如 `latest- arm32v6`。
 
 SQLite 后端是最广泛被使用/测试的后端，除非有特殊需要使用其他数据库后端，否则建议大多数用户使用它。
 
@@ -25,11 +25,11 @@ SQLite 后端是最广泛被使用/测试的后端，除非有特殊需要使用
 
 ## 镜像更新 <a id="image-updates"></a>
 
-偶尔，上游的 Bitwarden 项目（即 Bitwarden 公司）会对客户端做一些向后不兼容的改动，这就需要对服务器的实现做相应的改动。Vaultwarden 一般会及时推送新的版本来适应这些改动。
+偶尔，上游的 Bitwarden 项目（即 Bitwarden 公司）会对客户端做一些向后不兼容的改动，这就需要对服务器的实现做相应的改动。vaultwarden 一般会及时推送新的版本来适应这些改动。
 
-然而，由于上游控制着客户端的发布，而移动应用和浏览器扩展通常会自己自动更新，因此，对于 Vaultwarden 用户来说，保持更新为最新的 Vaultwarden 版本非常重要。否则，不兼容的客户端和服务器版本可能会导致突然中断或异常。
+然而，由于上游控制着客户端的发布，而移动应用和浏览器扩展通常会自己自动更新，因此，对于 vaultwarden 用户来说，保持更新为最新的 vaultwarden 版本非常重要。否则，不兼容的客户端和服务器版本可能会导致突然中断或异常。
 
-网页密码库是唯一的例外：由于网页密码库与 Vaultwarden 镜像捆绑在一起，它的版本总是与 Vaultwarden 服务器的版本相匹配。如果你只把网页密码库用作客户端（可能性不大），那么你就不需要担心这些兼容性问题。
+网页密码库是唯一的例外：由于网页密码库与 vaultwarden 镜像捆绑在一起，它的版本总是与 vaultwarden 服务器的版本相匹配。如果你只把网页密码库用作客户端（可能性不大），那么你就不需要担心这些兼容性问题。
 
 ## 历史镜像 <a id="historical-images"></a>
 
