@@ -50,3 +50,13 @@ Dinger1986 创建了一个在 Ubuntu 20.04 上从源代码安装 bitwarden\_rs �
 
 在 [FreeBSD 端口树](https://www.freshports.org/security/vaultwarden/)中可用，并在 FreeBSD pkg 存储库中作为二进制包提供：`pkg install vaultwarden`
 
+## 多个 RPM 和 DEB 发行版 <a id="multiple-rpm-and-deb-distributions"></a>
+
+openSUSE 构建服务项目，支持 CentOS、Debian、Fedora、RHEL、SUSE、Ubuntu。
+
+您可以直接下载软件包或使用可用的存储库。
+
+**警告**：目前这些软件包包含预构建的二进制文件，无法使用此构建服务构建 rust-nightly 包。
+
+ [vaultwarden](https://build.opensuse.org/package/show/home:Masgalor:Vaultwarden/vaultwarden) [vaultwarden-webvault](https://build.opensuse.org/package/show/home:Masgalor:Vaultwarden/vaultwarden-webvault)
+
